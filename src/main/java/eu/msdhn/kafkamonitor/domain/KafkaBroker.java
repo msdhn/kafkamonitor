@@ -9,7 +9,7 @@ import java.util.Set;
 public class KafkaBroker extends AbstractKafkaDetails {
 
     @Getter
-    private int id;
+    private String id;
 
     @Getter
     private String host;
@@ -25,10 +25,15 @@ public class KafkaBroker extends AbstractKafkaDetails {
     @Setter
     private List<kafkaTopicPartition> topicPartitions;
 
-    public KafkaBroker(int id, String host, String rack) {
+    public KafkaBroker(String id, String host, String rack) {
         this.id = id;
         this.host = host;
         this.rack = rack;
     }
-}
 
+    public KafkaBroker(String id) {
+        this.id = id;
+    }
+
+
+}

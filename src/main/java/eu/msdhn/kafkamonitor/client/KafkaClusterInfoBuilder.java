@@ -5,28 +5,26 @@ import eu.msdhn.kafkamonitor.domain.KafkaCluster;
 import eu.msdhn.kafkamonitor.domain.KafkaTopic;
 import lombok.val;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class KafkaClusterBuilder {
+public class KafkaClusterInfoBuilder {
 
     private KafkaClient kafkaClient;
 
-    private KafkaClusterBuilder(String zooKeeper) {
+    private KafkaClusterInfoBuilder(String zooKeeper) {
         this.kafkaClient = new KafkaClient(zooKeeper);
     }
 
-    public static KafkaClusterBuilder instance(String zooKeeper) {
-        return new KafkaClusterBuilder(zooKeeper);
+    public static KafkaClusterInfoBuilder instance(String zooKeeper) {
+        return new KafkaClusterInfoBuilder(zooKeeper);
     }
 
-    public KafkaCluster buildKafkaCluster() {
+    public KafkaCluster buildKafkaClusterInfo() {
         KafkaCluster kafkaCluster = new KafkaCluster();
 
         kafkaCluster.setBrokers(getAllBrokersInCluster());
         kafkaCluster.setTopics(getTopics());
-        kafkaCluster.setInternalTopics(getInternalTopics());
         kafkaCluster.setController(getController());
 
         return kafkaCluster;
@@ -43,12 +41,9 @@ public class KafkaClusterBuilder {
     }
 
     private List<KafkaTopic> getTopics() {
-        return Arrays.asList();
-    }
-
-
-    private List<KafkaTopic> getInternalTopics() {
-        return Arrays.asList();
+        val topics = this.kafkaClient.getTopics();
+        topics.sort(Comparator.comparing(KafkaTopic::getName));
+        return topics;
     }
 
 }

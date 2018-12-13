@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Set;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class KafkaCluster extends AbstractKafkaDetails {
 
     @Getter
@@ -29,4 +27,3 @@ public class KafkaCluster extends AbstractKafkaDetails {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<KafkaTopic> internalTopics;
 }
-
