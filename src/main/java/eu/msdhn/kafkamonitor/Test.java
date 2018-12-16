@@ -9,25 +9,24 @@ import scala.collection.JavaConverters;
 
 public class Test {
 
-    public static void main(String... args) {
+  public static void main(String... args) {
 
-        val time = Time.SYSTEM;
-        val zkClient = KafkaZkClient.apply("localhost:2181", JaasUtils.isZkSecurityEnabled(), 30000, 30000, Int.MaxValue(), time, "", "");
+    val time = Time.SYSTEM;
+    val zkClient = KafkaZkClient
+        .apply("localhost:2181", JaasUtils.isZkSecurityEnabled(), 30000, 30000, Int.MaxValue(),
+            time, "", "");
+
+    val x = zkClient.getSortedBrokerList();
+
+    val y = zkClient.getAllBrokersInCluster();
+
+    JavaConverters.asJavaCollection(y).forEach(p -> System.out.print(
+
+        p.endPoints()
+
+    ));
 
 
-        val x = zkClient.getSortedBrokerList();
-
-
-        val y = zkClient.getAllBrokersInCluster();
-
-
-        JavaConverters.asJavaCollection(y).forEach(p -> System.out.print(
-
-                p.endPoints()
-
-        ));
-
-
-    }
+  }
 
 }
