@@ -7,6 +7,7 @@ import eu.msdhn.kafkamonitor.domain.kafkaTopicPartition;
 import kafka.server.ConfigType;
 import kafka.zk.AdminZkClient;
 import kafka.zk.KafkaZkClient;
+import lombok.Getter;
 import lombok.val;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.internals.Topic;
@@ -20,17 +21,27 @@ import java.util.stream.Collectors;
 
 import static scala.collection.JavaConverters.asJavaCollection;
 
-public class KafkaClient {
+/**
+ * N.B : connection must be closed carefully
+ */
+class KafkaClient {
 
     protected AdminZkClient adminZkClient;
     private KafkaZkClient zkClient;
+    private int sessionTimeOutMS = 30000;
+    private int connectionTimeOutMS = 30000;
 
-    private int sessionTimeOutMS = 60000;
-    private int connectionTimeOutMS = 60000;
+    @Getter
+    private String zookeeper;
 
     public KafkaClient(String zooKeeperString) {
+        this.zookeeper = zooKeeperString;
         this.zkClient = KafkaZkClient.apply("localhost:2181", JaasUtils.isZkSecurityEnabled(), sessionTimeOutMS, connectionTimeOutMS, Int.MaxValue(), Time.SYSTEM, "", "");
         this.adminZkClient = new AdminZkClient(this.zkClient);
+    }
+
+    public void close() {
+        this.zkClient.close();
     }
 
     public List<KafkaBroker> getAllBrokersInCluster() {
@@ -55,6 +66,7 @@ public class KafkaClient {
     }
 
     public List<kafkaTopicPartition> getPartitionsOnABroker(String brokerId) {
+
         val allTopicPartitions = asJavaCollection(this.zkClient.getAllPartitions()).stream()
                 .map(eachPartition -> {
                     kafkaTopicPartition kafkaTopicPartition = new kafkaTopicPartition();
@@ -76,6 +88,7 @@ public class KafkaClient {
     }
 
     public List<KafkaTopic> getTopics() {
+
         val allTopics = this.zkClient.getAllTopicsInCluster();
         return asJavaCollection(allTopics).stream()
                 .map(topicName -> {
@@ -93,7 +106,6 @@ public class KafkaClient {
                     return kafkaTopic;
                 }).collect(Collectors.toList());
     }
-
 
     //TODO : need to check is this works (does it give the unavailable replicas as well)
     private int getReplicationFactor(String topicName) {

@@ -10,10 +10,10 @@ import java.util.List;
 
 public class KafkaClusterInfoBuilder {
 
-    private KafkaClient kafkaClient;
+    private String zookeeper;
 
     private KafkaClusterInfoBuilder(String zooKeeper) {
-        this.kafkaClient = new KafkaClient(zooKeeper);
+        this.zookeeper = zooKeeper;
     }
 
     public static KafkaClusterInfoBuilder instance(String zooKeeper) {
@@ -21,27 +21,32 @@ public class KafkaClusterInfoBuilder {
     }
 
     public KafkaCluster buildKafkaClusterInfo() {
-        KafkaCluster kafkaCluster = new KafkaCluster();
+        KafkaClient kafkaClient = new KafkaClient(this.zookeeper);
+        try {
+            KafkaCluster kafkaCluster = new KafkaCluster();
 
-        kafkaCluster.setBrokers(getAllBrokersInCluster());
-        kafkaCluster.setTopics(getTopics());
-        kafkaCluster.setController(getController());
+            kafkaCluster.setBrokers(getAllBrokersInCluster(kafkaClient));
+            kafkaCluster.setTopics(getTopics(kafkaClient));
+            kafkaCluster.setController(getController());
 
-        return kafkaCluster;
+            return kafkaCluster;
+        } finally {
+            kafkaClient.close();
+        }
     }
 
     private KafkaBroker getController() {
         return null;
     }
 
-    private List<KafkaBroker> getAllBrokersInCluster() {
-        val brokers = this.kafkaClient.getAllBrokersInCluster();
+    private List<KafkaBroker> getAllBrokersInCluster(KafkaClient kafkaClient) {
+        val brokers = kafkaClient.getAllBrokersInCluster();
         brokers.sort(Comparator.comparing(KafkaBroker::getId));
         return brokers;
     }
 
-    private List<KafkaTopic> getTopics() {
-        val topics = this.kafkaClient.getTopics();
+    private List<KafkaTopic> getTopics(KafkaClient kafkaClient) {
+        val topics = kafkaClient.getTopics();
         topics.sort(Comparator.comparing(KafkaTopic::getName));
         return topics;
     }

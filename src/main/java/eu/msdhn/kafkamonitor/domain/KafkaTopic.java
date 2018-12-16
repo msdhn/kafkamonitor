@@ -1,6 +1,5 @@
 package eu.msdhn.kafkamonitor.domain;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,5 +33,8 @@ public class KafkaTopic extends AbstractKafkaDetails {
 
     public KafkaTopic(String name) {
         this.name = name;
+    }
+
+    public KafkaTopic() {
     }
 }
