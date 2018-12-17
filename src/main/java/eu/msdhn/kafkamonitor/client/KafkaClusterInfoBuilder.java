@@ -5,6 +5,8 @@ import eu.msdhn.kafkamonitor.domain.KafkaCluster;
 import eu.msdhn.kafkamonitor.domain.KafkaTopic;
 import java.util.Comparator;
 import java.util.List;
+
+import eu.msdhn.kafkamonitor.domain.KafkaTopicPartition;
 import lombok.val;
 
 public class KafkaClusterInfoBuilder {
@@ -30,6 +32,15 @@ public class KafkaClusterInfoBuilder {
 
       return kafkaCluster;
     } finally {
+      kafkaClient.close();
+    }
+  }
+
+  public List<KafkaTopicPartition> getAllPartitions(){
+    KafkaClient kafkaClient = new KafkaClient(this.zookeeper);
+    try{
+      return kafkaClient.getAllPartitions();
+    }finally{
       kafkaClient.close();
     }
   }

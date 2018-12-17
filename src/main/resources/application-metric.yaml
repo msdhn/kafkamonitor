@@ -1,0 +1,11 @@
+kafka:
+  brokermetric:
+    jmxUrls:
+    - id: 0
+      jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:9096/jmxrmi
+
+    - id: 1
+      jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:9097/jmxrmi
+
+    - id: 2
+      jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:9097/jmxrmi
