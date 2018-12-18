@@ -3,13 +3,13 @@ package eu.msdhn.kafkamonitor.config;
 import lombok.Getter;
 import lombok.Setter;
 
-public class BrokerJmxUrls {
+public class KafkaMBeanConfig {
 
     @Getter
     @Setter
-    private int id;
+    private String name;
 
     @Getter
     @Setter
-    private String jmxUrl;
+    private String description;
 }

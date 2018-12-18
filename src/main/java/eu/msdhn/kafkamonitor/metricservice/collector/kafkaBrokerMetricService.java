@@ -1,15 +1,13 @@
 package eu.msdhn.kafkamonitor.metricservice.collector;
 
 import eu.msdhn.kafkamonitor.config.KafkaBrokerMetricConfig;
-import eu.msdhn.kafkamonitor.metricservice.KafkaMetric;
-import lombok.val;
-
-import javax.management.MBeanServerConnection;
-import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
+import eu.msdhn.kafkamonitor.domain.KafkaBrokerMetric;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class kafkaBrokerMetricService extends kafkaBaseMetricService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(kafkaBrokerMetricService.class);
 
     private KafkaBrokerMetricConfig config;
 
@@ -18,40 +16,8 @@ public class kafkaBrokerMetricService extends kafkaBaseMetricService {
     }
 
     @Override
-    public KafkaMetric collectMetric() {
-        try {
-            val mbsConnection = connect("");
-            if (mbsConnection != null) {
-
-
-
-            }
-
-        } finally {
-
-        }
-        return null;
+    public KafkaBrokerMetric collectMetric(String jmxUrl) {
+        return KafkaJmxUtil.instance().retrieveMetric(jmxUrl, this.config.getMetrics());
     }
-
-
-    private MBeanServerConnection connect(String jmxServiceUrl) {
-
-        boolean connected = false;
-        JMXConnector jmxConnector = null;
-        val connectTestStarted = System.currentTimeMillis();
-        val connectTimeoutMs = 10000;
-        do {
-            try {
-                val url = new JMXServiceURL(jmxServiceUrl);
-                jmxConnector = JMXConnectorFactory.connect(url, null);
-                MBeanServerConnection mbsConnection = jmxConnector.getMBeanServerConnection();
-                return mbsConnection;
-            } catch (Exception exc) {
-                //TODO log
-            }
-        } while (System.currentTimeMillis() - connectTestStarted < connectTimeoutMs);
-        return null;
-    }
-
 
 }

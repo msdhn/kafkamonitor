@@ -7,18 +7,21 @@ import eu.msdhn.kafkamonitor.metricservice.reporter.KafkaDefaultMetricReporterSe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
-public class KafkaMetricBeanConfig {
+@Profile("metric")
+public class KafkaMetricBeansConfig {
 
     @Autowired
     private KafkaBrokerMetricConfig kafkaBrokerMetricConfig;
 
-    @Bean(name = "defaultBrokerMetricReporter")
+    @Bean(name = "defaultBrokerMetricReporterService")
     public KafkaBaseMetricReporterService getDefaultMetricReporter() {
         kafkaBaseMetricService kafkaBaseMetricService = new kafkaBrokerMetricService(kafkaBrokerMetricConfig);
-        KafkaDefaultMetricReporterService kafkaDefaultMetricReporterService = new KafkaDefaultMetricReporterService(kafkaBaseMetricService);
+        KafkaDefaultMetricReporterService kafkaDefaultMetricReporterService = new KafkaDefaultMetricReporterService(kafkaBaseMetricService, kafkaBrokerMetricConfig);
         return kafkaDefaultMetricReporterService;
     }
+
 
 }

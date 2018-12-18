@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("kafka")
-public class KafkaMetricConfig {
+public class KafkaClusterPropertiesConfig {
 
     @Getter
     @Setter

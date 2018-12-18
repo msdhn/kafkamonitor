@@ -80,7 +80,7 @@ class KafkaClient {
         val allTopicPartitions = asJavaCollection(this.zkClient.getAllPartitions()).stream()
                 .map(eachPartition -> {
                     KafkaTopicPartition kafkaTopicPartition = new KafkaTopicPartition();
-                    kafkaTopicPartition.setPartitionNumber(String.valueOf(eachPartition.partition()));
+                    kafkaTopicPartition.setPartitionNumber(eachPartition.partition());
                     kafkaTopicPartition.setTopic(new KafkaTopic(eachPartition.topic()));
                     final List<KafkaBroker> replicas = asJavaCollection(this.zkClient.getReplicasForPartition(eachPartition)).stream()
                             .map(eachReplica -> {
@@ -102,7 +102,15 @@ class KafkaClient {
                     }
                     return kafkaTopicPartition;
                 }).collect(Collectors.toList());
-        allTopicPartitions.sort(Comparator.comparing(p -> p.getTopic().getName()));
+
+        allTopicPartitions.sort((o1, o2) -> {
+            int com = o1.getTopic().getName().compareTo(o2.getTopic().getName());
+            if (com == 0) {
+                return o1.getPartitionNumber() - o2.getPartitionNumber();
+            } else {
+                return com;
+            }
+        });
         return allTopicPartitions;
     }
 

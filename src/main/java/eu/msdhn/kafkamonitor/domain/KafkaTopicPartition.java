@@ -9,7 +9,7 @@ public class KafkaTopicPartition extends AbstractKafkaDetails {
 
     @Getter
     @Setter
-    private String partitionNumber;
+    private int partitionNumber;
 
     @Getter
     @Setter
