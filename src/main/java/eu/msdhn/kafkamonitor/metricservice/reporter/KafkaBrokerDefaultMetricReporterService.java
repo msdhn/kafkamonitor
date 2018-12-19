@@ -1,19 +1,19 @@
 package eu.msdhn.kafkamonitor.metricservice.reporter;
 
 import eu.msdhn.kafkamonitor.config.BrokerJmxUrls;
-import eu.msdhn.kafkamonitor.config.KafkaBrokerMetricConfig;
+import eu.msdhn.kafkamonitor.config.KafkaReportableMetricConfig;
 import eu.msdhn.kafkamonitor.domain.KafkaMetricException;
 import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class KafkaDefaultMetricReporterService extends KafkaBaseMetricReporterService {
+public final class KafkaBrokerDefaultMetricReporterService extends KafkaBaseMetricReporterService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaDefaultMetricReporterService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaBrokerDefaultMetricReporterService.class);
 
-    private KafkaBrokerMetricConfig config;
+    private KafkaReportableMetricConfig config;
 
-    public KafkaDefaultMetricReporterService(eu.msdhn.kafkamonitor.metricservice.collector.kafkaBaseMetricService kafkaBaseMetricService, KafkaBrokerMetricConfig config) {
+    public KafkaBrokerDefaultMetricReporterService(eu.msdhn.kafkamonitor.metricservice.collector.kafkaBaseMetricService kafkaBaseMetricService, KafkaReportableMetricConfig config) {
         super(kafkaBaseMetricService);
         this.config = config;
     }

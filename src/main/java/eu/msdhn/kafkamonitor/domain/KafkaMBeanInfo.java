@@ -9,6 +9,8 @@ public class KafkaMBeanInfo {
     @Getter
     private String mbeanName;
 
+    @Getter
+    private String name;
 
     @Getter
     private String description;
@@ -19,8 +21,9 @@ public class KafkaMBeanInfo {
     public KafkaMBeanInfo() {
     }
 
-    public KafkaMBeanInfo(String mbeanName, List<KafkaMBeanAttributeValue> attributeValueList) {
+    public KafkaMBeanInfo(String mbeanName, String name, List<KafkaMBeanAttributeValue> attributeValueList) {
         this.mbeanName = mbeanName;
         this.attributeValueList = attributeValueList;
+        this.name = name;
     }
 }

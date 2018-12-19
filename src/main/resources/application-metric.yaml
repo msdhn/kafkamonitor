@@ -1,5 +1,6 @@
 kafka:
-  brokermetric:
+
+  metric:
     jmxUrls:
     - id: 0
       jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:9096/jmxrmi
@@ -10,48 +11,56 @@ kafka:
     - id: 2
       jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:9097/jmxrmi
 
-    metrics:
+    brokerMetrics:
     - name: kafka.server:type=ReplicaManager,name=UnderReplicatedPartitions
       description:
+      attributes:
+      - Value
     - name: kafka.controller:type=KafkaController,name=OfflinePartitionsCount
       description:
+      attributes:
+      - Value
     - name: kafka.server:type=ReplicaManager,name=PartitionCount
       description:
-#    - name: kafka.controller:type=KafkaController,name=ActiveControllerCount
-#      description:
-#    - name: kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec
-#      description:
-#    - name: kafka.server:type=BrokerTopicMetrics,name=BytesOutPerSe
-#      description:
-#    - name: kafka.network:type=RequestMetrics,name=RequestsPerSec,request={Produce|FetchConsumer|FetchFollower}
-#      description:
-#    - name: kafka.server:type=BrokerTopicMetrics,name=TotalProduceRequestsPerSec
-#      description:
-#    - name: kafka.server:type=BrokerTopicMetrics,name=TotalFetchRequestsPerSec
-#      description:
-#    - name: kafka.server:type=BrokerTopicMetrics,name=FailedProduceRequestsPerSec
-#      description:
-#    - name: kafka.server:type=BrokerTopicMetrics,name=FailedFetchRequestsPerSec
-#      description:
-#    - name: kafka.controller:type=ControllerStats,name=LeaderElectionRateAndTimeMs
-#      description:
-#    - name: kafka.controller:type=ControllerStats,name=UncleanLeaderElectionsPerSec
-#      description:
-#    - name: kafka.server:type=ReplicaManager,name=LeaderCount
-#      description:
-#    - name: kafka.server:type=ReplicaFetcherManager,name=MaxLag,clientId=Replica
-#    - name: kafka.server:type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent
-#      description:
-#    - name: kafka.network:type=SocketServer,name=NetworkProcessorAvgIdlePercent
-#      description:
-#    - name: kafka.network:type=RequestChannel,name=RequestQueueSize
-#      description:
-#    - name: kafka.network:type=RequestMetrics,name=TotalTimeMs,request={Produce|FetchConsumer|FetchFollower}
-#      description:
-#    - name: kafka.log:type=LogFlushStats,name=LogFlushRateAndTimeMs
-#      description:
-#    - name: kafka.server:type=ReplicaManager,name=IsrExpandsPerSec
-#      description:
-#    - name: kafka.server:type=BrokerTopicMetrics,name=MessagesInPerSec
-#      description:
-#
+    - name: kafka.controller:type=KafkaController,name=ActiveControllerCount
+      description:
+    - name: kafka.server:type=BrokerTopicMetrics,name=BytesInPerSec
+      description:
+      attributes:
+      - Count
+      - FiveMinuteRate
+      - EventType
+      - RateUnit
+    - name: kafka.server:type=BrokerTopicMetrics,name=BytesOutPerSe
+      description:
+    - name: kafka.network:type=RequestMetrics,name=RequestsPerSec,request={Produce|FetchConsumer|FetchFollower}
+      description:
+    - name: kafka.server:type=BrokerTopicMetrics,name=TotalProduceRequestsPerSec
+      description:
+    - name: kafka.server:type=BrokerTopicMetrics,name=TotalFetchRequestsPerSec
+      description:
+    - name: kafka.server:type=BrokerTopicMetrics,name=FailedProduceRequestsPerSec
+      description:
+    - name: kafka.server:type=BrokerTopicMetrics,name=FailedFetchRequestsPerSec
+      description:
+    - name: kafka.controller:type=ControllerStats,name=LeaderElectionRateAndTimeMs
+      description:
+    - name: kafka.controller:type=ControllerStats,name=UncleanLeaderElectionsPerSec
+      description:
+    - name: kafka.server:type=ReplicaManager,name=LeaderCount
+      description:
+    - name: kafka.server:type=ReplicaFetcherManager,name=MaxLag,clientId=Replica
+    - name: kafka.server:type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent
+      description:
+    - name: kafka.network:type=SocketServer,name=NetworkProcessorAvgIdlePercent
+      description:
+    - name: kafka.network:type=RequestChannel,name=RequestQueueSize
+      description:
+    - name: kafka.network:type=RequestMetrics,name=TotalTimeMs,request={Produce|FetchConsumer|FetchFollower}
+      description:
+    - name: kafka.log:type=LogFlushStats,name=LogFlushRateAndTimeMs
+      description:
+    - name: kafka.server:type=ReplicaManager,name=IsrExpandsPerSec
+      description:
+    - name: kafka.server:type=BrokerTopicMetrics,name=MessagesInPerSec
+      description:

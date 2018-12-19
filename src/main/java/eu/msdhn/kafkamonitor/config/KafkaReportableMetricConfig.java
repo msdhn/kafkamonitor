@@ -10,9 +10,22 @@ import org.springframework.context.annotation.Profile;
 import java.util.List;
 
 @Configuration
-@ConfigurationProperties("kafka.brokermetric")
+@ConfigurationProperties("kafka.metric")
 @Profile("metric")
-public class KafkaBrokerMetricConfig extends KafkaClusterPropertiesConfig {
+public class KafkaReportableMetricConfig extends KafkaClusterAppPropertiesConfig {
+
+    @Getter
+    @Setter
+    private String influxdbHost;
+
+    @Getter
+    @Setter
+    private String influxdbUser;
+
+    @Getter
+    @Setter
+    private String influxdbPassword;
+
 
     @Getter
     @Setter
@@ -20,7 +33,7 @@ public class KafkaBrokerMetricConfig extends KafkaClusterPropertiesConfig {
 
     @Getter
     @Setter
-    private List<KafkaMBeanConfig> metrics;
+    private List<KafkaMBeanConfig> brokerMetrics;
 }
 
 

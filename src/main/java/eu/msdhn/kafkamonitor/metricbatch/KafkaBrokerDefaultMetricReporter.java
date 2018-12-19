@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 
 @EnableScheduling
 @Component
-@Profile("metric")
-public final class KafkaBrokerMetricReporter {
+@Profile({"metricdefault"})
+public final class KafkaBrokerDefaultMetricReporter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaBrokerMetricReporter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaBrokerDefaultMetricReporter.class);
 
     private KafkaBaseMetricReporterService defaultBrokerMetricReporterService;
 
     @Autowired
-    public KafkaBrokerMetricReporter(@Qualifier("defaultBrokerMetricReporterService") KafkaBaseMetricReporterService defaultBrokerMetricReporterService) {
+    public KafkaBrokerDefaultMetricReporter(@Qualifier("defaultBrokerMetricReporterService") KafkaBaseMetricReporterService defaultBrokerMetricReporterService) {
         this.defaultBrokerMetricReporterService = defaultBrokerMetricReporterService;
     }
 

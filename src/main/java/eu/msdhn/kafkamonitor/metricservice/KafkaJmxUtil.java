@@ -1,4 +1,4 @@
-package eu.msdhn.kafkamonitor.metricservice.collector;
+package eu.msdhn.kafkamonitor.metricservice;
 
 import eu.msdhn.kafkamonitor.config.KafkaMBeanConfig;
 import eu.msdhn.kafkamonitor.domain.KafkaBrokerMetric;
@@ -84,8 +84,13 @@ final public class KafkaJmxUtil {
                 Objects.requireNonNull(metric);
                 Objects.requireNonNull(metric.getName());
                 for (ObjectName mbeanName : mbsConnection.queryNames(new ObjectName(metric.getName()), null)) {
-                    kafkaMBeans.add(new KafkaMBeanInfo(mbeanName.getCanonicalName(),
-                            Arrays.stream(mbsConnection.getMBeanInfo(mbeanName).getAttributes()).map(a ->
+                    kafkaMBeans.add(new KafkaMBeanInfo(mbeanName.getCanonicalName(), mbeanName.getKeyPropertyList().get("name"),
+                            Arrays.stream(mbsConnection.getMBeanInfo(mbeanName).getAttributes()).filter(a -> {
+                                if (metric.getAttributes() == null || metric.getAttributes().isEmpty()) {
+                                    return true;
+                                }
+                                return metric.getAttributes().contains(a.getName());
+                            }).map(a ->
                                     new KafkaMBeanAttributeValue(a.getName(), a.getDescription(), getAttributeValue(mbsConnection, mbeanName, a.getName()))
                             ).collect(Collectors.toList())));
                 }
