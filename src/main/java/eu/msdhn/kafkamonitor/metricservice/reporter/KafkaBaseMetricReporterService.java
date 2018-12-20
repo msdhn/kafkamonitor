@@ -5,12 +5,12 @@ import lombok.Getter;
 
 public abstract class KafkaBaseMetricReporterService {
 
-    @Getter
-    private kafkaBaseMetricService kafkaBaseMetricService;
+  @Getter
+  protected kafkaBaseMetricService kafkaBaseMetricService;
 
-    protected KafkaBaseMetricReporterService(kafkaBaseMetricService kafkaBaseMetricService) {
-        this.kafkaBaseMetricService = kafkaBaseMetricService;
-    }
+  protected KafkaBaseMetricReporterService(kafkaBaseMetricService kafkaBaseMetricService) {
+    this.kafkaBaseMetricService = kafkaBaseMetricService;
+  }
 
-    public abstract void sendMetric();
+  public abstract void sendMetric();
 }

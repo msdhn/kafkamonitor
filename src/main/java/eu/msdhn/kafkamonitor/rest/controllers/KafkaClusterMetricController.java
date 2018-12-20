@@ -1,6 +1,6 @@
 package eu.msdhn.kafkamonitor.rest.controllers;
 
-import eu.msdhn.kafkamonitor.config.KafkaReportableMetricConfig;
+import eu.msdhn.kafkamonitor.config.KafkaReportableMetricPropertiesConfig;
 import eu.msdhn.kafkamonitor.domain.KafkaMetric;
 import eu.msdhn.kafkamonitor.metricservice.collector.kafkaBaseMetricService;
 import eu.msdhn.kafkamonitor.metricservice.collector.kafkaBrokerMetricService;
@@ -19,10 +19,11 @@ import java.util.Objects;
 @Profile("metric")
 public class KafkaClusterMetricController {
 
-    private KafkaReportableMetricConfig kafkaBrokerMetricConfig;
+    private KafkaReportableMetricPropertiesConfig kafkaBrokerMetricConfig;
 
     @Autowired
-    public KafkaClusterMetricController(KafkaReportableMetricConfig kafkaBrokerMetricConfig) {
+    public KafkaClusterMetricController(
+        KafkaReportableMetricPropertiesConfig kafkaBrokerMetricConfig) {
         this.kafkaBrokerMetricConfig = kafkaBrokerMetricConfig;
     }
 

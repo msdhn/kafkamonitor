@@ -1,5 +1,8 @@
 kafka:
   metric:
-    influxdbHost: http://localhost:8086
-    influxdbUser: admin
-    influxdbPassword: admin
+    influxdb:
+      host: http://localhost:8086
+      user: admin
+      password: admin
+      enableGzip: true
+

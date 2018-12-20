@@ -3,7 +3,7 @@ package eu.msdhn.kafkamonitor.config;
 import lombok.Getter;
 import lombok.Setter;
 
-public class BrokerJmxUrls {
+public class BrokerJmxPropertiesUrls {
 
     @Getter
     @Setter

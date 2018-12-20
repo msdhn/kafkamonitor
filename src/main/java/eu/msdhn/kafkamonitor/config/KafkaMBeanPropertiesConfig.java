@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-public class KafkaMBeanConfig {
+public class KafkaMBeanPropertiesConfig {
 
     @Getter
     @Setter

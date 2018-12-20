@@ -1,6 +1,6 @@
 package eu.msdhn.kafkamonitor.metricservice;
 
-import eu.msdhn.kafkamonitor.config.KafkaMBeanConfig;
+import eu.msdhn.kafkamonitor.config.KafkaMBeanPropertiesConfig;
 import eu.msdhn.kafkamonitor.domain.KafkaBrokerMetric;
 import eu.msdhn.kafkamonitor.domain.KafkaMBeanAttributeValue;
 import eu.msdhn.kafkamonitor.domain.KafkaMBeanInfo;
@@ -74,13 +74,13 @@ final public class KafkaJmxUtil {
         } while (System.currentTimeMillis() - connectTestStarted < CONN_TIME_OUT);
     }
 
-    public KafkaBrokerMetric retrieveMetric(String jmxServiceUrl, List<KafkaMBeanConfig> metrics) {
+    public KafkaBrokerMetric retrieveMetric(String jmxServiceUrl, List<KafkaMBeanPropertiesConfig> metrics) {
         Objects.requireNonNull(jmxServiceUrl);
         val mbsConnection = connect(jmxServiceUrl);
         KafkaBrokerMetric kafkaBrokerMetric = new KafkaBrokerMetric();
         try {
             List<KafkaMBeanInfo> kafkaMBeans = new ArrayList<>();
-            for (KafkaMBeanConfig metric : metrics) {
+            for (KafkaMBeanPropertiesConfig metric : metrics) {
                 Objects.requireNonNull(metric);
                 Objects.requireNonNull(metric.getName());
                 for (ObjectName mbeanName : mbsConnection.queryNames(new ObjectName(metric.getName()), null)) {
