@@ -4,7 +4,9 @@ import eu.msdhn.kafkamonitor.config.BrokerJmxPropertiesUrls;
 import eu.msdhn.kafkamonitor.config.KafkaReportableMetricPropertiesConfig;
 import eu.msdhn.kafkamonitor.domain.KafkaMetric;
 import eu.msdhn.kafkamonitor.domain.KafkaMetricException;
-import eu.msdhn.kafkamonitor.metricservice.influxdb.InfluxDBService;
+import eu.msdhn.kafkamonitor.domain.KafkaMetricType;
+import eu.msdhn.kafkamonitor.metricservice.KafkaMetricDBService;
+import eu.msdhn.kafkamonitor.metricservice.collector.kafkaBaseMetricCollectorService;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.val;
@@ -14,41 +16,45 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 
 @Profile({"metric", "metricinfluxdb"})
-public final class KafkaBrokerInfluxDBMetricReporterService extends KafkaBaseMetricReporterService {
+public final class KafkaDBMetricReporterService extends KafkaBaseMetricReporterService {
 
   private static final Logger LOG = LoggerFactory
-      .getLogger(KafkaBrokerInfluxDBMetricReporterService.class);
+      .getLogger(KafkaDBMetricReporterService.class);
 
   private KafkaReportableMetricPropertiesConfig reportableConfig;
+  private KafkaMetricDBService dbService;
 
-  private InfluxDBService influxDBService;
-
-  public KafkaBrokerInfluxDBMetricReporterService(
-      eu.msdhn.kafkamonitor.metricservice.collector.kafkaBaseMetricService kafkaBaseMetricService,
+  public KafkaDBMetricReporterService(
+      Map<KafkaMetricType, kafkaBaseMetricCollectorService> kafkaBaseMetricServices,
       KafkaReportableMetricPropertiesConfig reportableConfig,
-      InfluxDBService influxDBService) {
-    super(kafkaBaseMetricService);
+      KafkaMetricDBService dbService) {
+    super(kafkaBaseMetricServices);
     this.reportableConfig = reportableConfig;
-    this.influxDBService = influxDBService;
+    this.dbService = dbService;
   }
 
   @Override
   public void sendMetric() {
+    sebdBrokerMetric();
+  }
+
+  private void sebdBrokerMetric() {
     Map<Integer, KafkaMetric> metrics = new HashMap<>();
     for (BrokerJmxPropertiesUrls brokerJmxUrls : this.reportableConfig.getJmxUrls()) {
       try {
-        val metric = this.kafkaBaseMetricService.collectMetric(brokerJmxUrls.getJmxUrl());
+        val metric = this.kafkaBaseMetricServiceMap
+            .get(KafkaMetricType.BROKER)
+            .collectMetric(brokerJmxUrls.getJmxUrl());
         metrics.put(brokerJmxUrls.getId(), metric);
       } catch (KafkaMetricException e) {
         //TODO just log and and continue
       }
     }
-
     try {
-      this.influxDBService.writeBrokerMetrics(metrics);
+      this.dbService.writeBrokerMetrics(metrics);
     } catch (InfluxDBException e) {
       //TODO : need to check what to do
     }
-
   }
+
 }

@@ -2,6 +2,7 @@ package eu.msdhn.kafkamonitor.metricservice.influxdb;
 
 import eu.msdhn.kafkamonitor.config.InfluxDBConnectionFactory;
 import eu.msdhn.kafkamonitor.domain.KafkaMetric;
+import eu.msdhn.kafkamonitor.metricservice.KafkaMetricDBService;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import lombok.val;
@@ -11,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class InfluxDBServiceImpl implements InfluxDBService {
+public class InfluxDBServiceImpl implements KafkaMetricDBService {
 
   private InfluxDBConnectionFactory connectionFactory;
 
@@ -43,7 +44,6 @@ public class InfluxDBServiceImpl implements InfluxDBService {
           batchPoints.point(p.build());
         }
       }
-
       connection.write(batchPoints);
 
     } catch (RuntimeException e) {
@@ -55,4 +55,6 @@ public class InfluxDBServiceImpl implements InfluxDBService {
       }
     }
   }
+
+
 }

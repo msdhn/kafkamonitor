@@ -1,10 +1,13 @@
 package eu.msdhn.kafkamonitor.config;
 
-import eu.msdhn.kafkamonitor.metricservice.collector.kafkaBaseMetricService;
-import eu.msdhn.kafkamonitor.metricservice.collector.kafkaBrokerMetricService;
-import eu.msdhn.kafkamonitor.metricservice.influxdb.InfluxDBService;
+import eu.msdhn.kafkamonitor.domain.KafkaMetricType;
+import eu.msdhn.kafkamonitor.metricservice.collector.kafkaBaseMetricCollectorService;
+import eu.msdhn.kafkamonitor.metricservice.collector.kafkaBrokerMetricCollectorService;
+import eu.msdhn.kafkamonitor.metricservice.influxdb.InfluxDBServiceImpl;
 import eu.msdhn.kafkamonitor.metricservice.reporter.KafkaBaseMetricReporterService;
-import eu.msdhn.kafkamonitor.metricservice.reporter.KafkaBrokerInfluxDBMetricReporterService;
+import eu.msdhn.kafkamonitor.metricservice.reporter.KafkaDBMetricReporterService;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,11 +21,13 @@ public class KafkaMetricInfluxDBBeansConfig {
   @Autowired
   public KafkaBaseMetricReporterService getMetricReporter(
       KafkaReportableMetricPropertiesConfig kafkaBrokerMetricConfig,
-      InfluxDBService influxDBService) {
-    kafkaBaseMetricService kafkaBaseMetricService = new kafkaBrokerMetricService(
-        kafkaBrokerMetricConfig);
-    KafkaBaseMetricReporterService kafkaDefaultMetricReporterService = new KafkaBrokerInfluxDBMetricReporterService(
-        kafkaBaseMetricService, kafkaBrokerMetricConfig, influxDBService);
-    return kafkaDefaultMetricReporterService;
+      InfluxDBServiceImpl influxDBServiceImpl) {
+
+    Map<KafkaMetricType, kafkaBaseMetricCollectorService> collectors = new HashMap<>();
+    collectors.put(KafkaMetricType.BROKER, new kafkaBrokerMetricCollectorService(
+        kafkaBrokerMetricConfig));
+
+    return new KafkaDBMetricReporterService(
+        collectors, kafkaBrokerMetricConfig, influxDBServiceImpl);
   }
 }

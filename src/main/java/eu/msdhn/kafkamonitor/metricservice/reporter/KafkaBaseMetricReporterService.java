@@ -1,15 +1,18 @@
 package eu.msdhn.kafkamonitor.metricservice.reporter;
 
-import eu.msdhn.kafkamonitor.metricservice.collector.kafkaBaseMetricService;
+import eu.msdhn.kafkamonitor.domain.KafkaMetricType;
+import eu.msdhn.kafkamonitor.metricservice.collector.kafkaBaseMetricCollectorService;
+import java.util.Map;
 import lombok.Getter;
 
 public abstract class KafkaBaseMetricReporterService {
 
   @Getter
-  protected kafkaBaseMetricService kafkaBaseMetricService;
+  protected Map<KafkaMetricType, kafkaBaseMetricCollectorService> kafkaBaseMetricServiceMap;
 
-  protected KafkaBaseMetricReporterService(kafkaBaseMetricService kafkaBaseMetricService) {
-    this.kafkaBaseMetricService = kafkaBaseMetricService;
+  protected KafkaBaseMetricReporterService(
+      Map<KafkaMetricType, kafkaBaseMetricCollectorService> kafkaBaseMetricServiceMap) {
+    this.kafkaBaseMetricServiceMap = kafkaBaseMetricServiceMap;
   }
 
   public abstract void sendMetric();

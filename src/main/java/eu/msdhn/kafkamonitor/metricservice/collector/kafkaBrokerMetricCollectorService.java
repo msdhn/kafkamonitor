@@ -6,13 +6,14 @@ import eu.msdhn.kafkamonitor.metricservice.KafkaJmxUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class kafkaBrokerMetricService extends kafkaBaseMetricService {
+public class kafkaBrokerMetricCollectorService extends kafkaBaseMetricCollectorService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(kafkaBrokerMetricService.class);
+  private static final Logger LOG = LoggerFactory
+      .getLogger(kafkaBrokerMetricCollectorService.class);
 
   private KafkaReportableMetricPropertiesConfig config;
 
-  public kafkaBrokerMetricService(KafkaReportableMetricPropertiesConfig config) {
+  public kafkaBrokerMetricCollectorService(KafkaReportableMetricPropertiesConfig config) {
     this.config = config;
   }
 

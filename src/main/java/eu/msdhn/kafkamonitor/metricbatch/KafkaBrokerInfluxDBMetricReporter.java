@@ -15,17 +15,19 @@ import org.springframework.stereotype.Component;
 @Profile({"metricinfluxdb"})
 public final class KafkaBrokerInfluxDBMetricReporter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaBrokerInfluxDBMetricReporter.class);
+  private static final Logger LOG = LoggerFactory
+      .getLogger(KafkaBrokerInfluxDBMetricReporter.class);
 
-    private KafkaBaseMetricReporterService influxDbBrokerMetricReporterService;
+  private KafkaBaseMetricReporterService influxdMReporterService;
 
-    @Autowired
-    public KafkaBrokerInfluxDBMetricReporter(@Qualifier("influxDbBrokerMetricReporterService") KafkaBaseMetricReporterService defaultBrokerMetricReporterService) {
-        this.influxDbBrokerMetricReporterService = defaultBrokerMetricReporterService;
-    }
+  @Autowired
+  public KafkaBrokerInfluxDBMetricReporter(
+      @Qualifier("influxDbBrokerMetricReporterService") KafkaBaseMetricReporterService influxdMReporterService) {
+    this.influxdMReporterService = influxdMReporterService;
+  }
 
-    @Scheduled(initialDelay = 1000, fixedRate = 10000)
-    public void report() {
-        this.influxDbBrokerMetricReporterService.sendMetric();
-    }
+  @Scheduled(initialDelay = 2 * 1000, fixedRate = 1 * 60 * 1000)
+  public void report() {
+    this.influxdMReporterService.sendMetric();
+  }
 }
